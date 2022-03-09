@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+    .hidden{
+        visibility: hidden;
+        position: fixed;
+    }
+
+    * {
+        color: #618F61;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 24px;
+    }
+
+    html,
+    body {
+        background-color: #030A11;
+        padding: 0;
+        margin: 0;
+    }
+
+
+
+    #console {
+        font-weight: bold;
+        padding: 2.5%;
+    }
+
+    input,
+    input:focus-visible {
+        width: 80%;
+        margin: auto;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        border-bottom: 5px solid rgba(128, 128, 128, 0.39);
+
+    }
+</style>
+
+<body>
+    <section>
+
+        <main id="console">
+        </main>
+        <input class="hidden" type="text" name="" id="input">
+    </section>
+    <script src="./type-engine.js"></script>
+</body>
+
+</html>

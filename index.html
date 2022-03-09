@@ -5,17 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <style>
+    * {
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Safari */
+        -khtml-user-select: none;
+        /* Konqueror HTML */
+        -moz-user-select: none;
+        /* Old versions of Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+
+    }
+
+    .user-input{
+        color: #48cae4;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
-    .hidden{
+    .hidden {
         visibility: hidden;
         position: fixed;
     }
 
     * {
         color: #618F61;
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', sans-serif !important;
         font-size: 24px;
+        font-style: italic;
     }
 
     html,
@@ -28,18 +50,17 @@
 
 
     #console {
-        font-weight: bold;
         padding: 2.5%;
     }
 
     input,
     input:focus-visible {
-        width: 80%;
         margin: auto;
+        width: 100%;
+        padding: 2.5%;
         background-color: transparent;
         border: none;
         outline: none;
-        border-bottom: 5px solid rgba(128, 128, 128, 0.39);
 
     }
 </style>
@@ -49,7 +70,7 @@
 
         <main id="console">
         </main>
-        <input class="hidden" type="text" name="" id="input">
+        <input class="hidden" type="text" name="" id="input" autocomplete="off">
     </section>
     <script src="./type-engine.js"></script>
 </body>

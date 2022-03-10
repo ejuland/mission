@@ -21,7 +21,7 @@ let script = [
     {
         message: `./gov.jpg`,
         isImage: true,
-        passive: true
+        passive:true
     },
 
     {
@@ -58,7 +58,7 @@ function revealToConsole(message) {
             textbox.innerHTML += char;
             setTimeout(() => {
                 done();
-            }, char.match(/\.|\,|\!|\?/g) ? 200 : 0)
+            }, char.match(/\.|\,|\!|\?/g) ? 200 : Math.floor(Math.random()*30))
         }
 
         let displayMessage = (message) => {

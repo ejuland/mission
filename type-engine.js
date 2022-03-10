@@ -1,34 +1,55 @@
 let script = [
     {
-        message: `Passcode:`,
-        validResponses: ["riddle me this"],
+        message: `Enter Passcode:`,
+        validResponses: ["milo"],
         invalidResponses: ["Login attempt failed", "You failed again", "You sure this is your laptop buddy?"]
     },
     {
-        message: `Welcome. Solve the following riddles to complete the mission. Mississippi has four S’s and four I’s. Can you spell that without using S or I?`,
-        validResponses: ["that"],
-        invalidResponses: ["Not even close...", "Wow...just..wow.."]
+        message: `Passphrase Confirmed. Welcome Agent T`,
+        passive: true,
     },
     {
-        message: `Correct! There’s a one-story house where everything is yellow. The walls are yellow. The doors are yellow. All the furniture is yellow. The house has yellow beds and yellow couches. What color are the stairs?`,
-        validResponses: ["ther are no stairs", 'no stairs', "there arent any stairs", "doesn't have", "not any stairs", "only one story"],
-        invalidResponses: ["Not even close...", "Wow...just..wow.."]
+        message: "Our hidden cameras confirm that you have successfully infiltrated the gala thrown by Governor Nathan Redford to celebrate his recent re-election. According to protocol, we will now debrief you on your current mission.",
+        passive: true,
     },
+
     {
-        message: `Correct! A girl fell off a 20-foot ladder. She wasn’t hurt. How?`,
-        validResponses: ["bottom step", "off the bottom", "bottom rung", "bottom"],
-        invalidResponses: ["Not even close...", "Wow...just..wow.."]
+        message: "You have arrived at this estate disguised as the infamous Governor Nathan Redford (The man depicted in the following portrait…) ",
+        passive: true,
     },
+
     {
-        message: `Mission Complete! Type "Done" to continue`,
-        validResponses: ["done"],
-        invalidResponses: ["Can't you read!?!?", "Not even close...", "Wow...just..wow.."]
+        message: `./gov.jpg`,
+        isImage: true,
+        passive: true
     },
+
+    {
+        message: "I must say that you really have outdone yourself with the disguise on this mission! However, I am confused why you chose to forego the moustache. This is the governors defining feature after all. Your disguise is brilliant enough to compensate for this, however.",
+        passive: true,
+    },
+
+    {
+        message: "Getting back to the subject at hand, Governor Redford achieved his great fame and fortune through many questionable means. Though the agency tends to turn a blind eye on such actives, his latest scandal affects our organization directly. ",
+        passive: true,
+    },
+
+    {
+        message: "Governor Redford has recently procured a list detailing the true identities of all our active field agents. It is imperative that we reclaim this list before he sells it to one of his many potential buyers.",
+        passive: true,
+    },
+
+    {
+        message: "Losing this list would risk the safety of our agents and our legitimacy as an organization. This is why we sent our best field agent to complete this mission. Do you choose to accept this mission? ",
+        validResponses: ["accept", "yes", "affrmative", "sure", "ok", "yeah", "uh huh"],
+        invalidResponses: ["We would like to remind you that you are under contract...", "Remember that Turkish prison you escaped from? It would be a shame if they found where their most wanted escapee is now...", "Need we remind you of the great debt you owe to this organization"]
+    },
+
 ]
 
 let stage = 0;
 
-
+let tock = 0;
 function revealToConsole(message) {
     return new Promise((finished, error) => {
         let textbox = document.createElement("div");
@@ -48,9 +69,12 @@ function revealToConsole(message) {
             }
             let char = message[0];
             displayChar(char, () => {
-                chirp().then(() => {
+                if (tock++ % 5 == 0)
+                    chirp().then(() => {
+                        displayMessage(message.substr(1));
+                    });
+                else
                     displayMessage(message.substr(1));
-                });
             })
         }
 
@@ -95,7 +119,7 @@ function getInput(prompt, correctResponses, incorrectResponses) {
                 typing = true;
                 let textbox = document.createElement("div");
                 document.getElementById("console").appendChild(textbox);
-                textbox.innerHTML = "Agent T:>  "+e.target.value;
+                textbox.innerHTML = "Agent T:>  " + e.target.value;
                 textbox.classList.add("user-input");
                 let responseFound = (userResponseCorrect(e.target.value) && e.target.value.trim().length > 0);
                 e.target.value = "";
@@ -124,6 +148,12 @@ function getInput(prompt, correctResponses, incorrectResponses) {
     });
 }
 
+function displayImage(src) {
+    let img = document.createElement("img");
+    img.src = src;
+    document.getElementById("console").appendChild(img);
+}
+
 let invalidCount = 0;
 async function runGame() {
     if (stage >= script.length) {
@@ -132,8 +162,12 @@ async function runGame() {
         document.getElementById("console").innerHTML = "";
         return;
     }
-    await revealToConsole(script[stage].message)
-    await getInput("", script[stage].validResponses, script[stage].invalidResponses);
+    if (!script[stage].isImage)
+        await revealToConsole(script[stage].message)
+    else
+        displayImage(script[stage].message)
+    if (!script[stage].passive)
+        await getInput("", script[stage].validResponses, script[stage].invalidResponses);
     stage++;
 
     console.log(invalidCount);

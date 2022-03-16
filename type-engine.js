@@ -30,7 +30,7 @@ let script = [
     },
 
     {
-        message: "Getting back to the subject at hand, Governor Redford achieved his great fame and fortune through many questionable means. Though the agency tends to turn a blind eye on such actives, his latest scandal affects our organization directly. ",
+        message: "Getting back to the subject at hand, Governor Redford achieved his great fame and fortune through many questionable means. Though the agency tends to turn a blind eye on such activities, his latest scandal affects our organization directly.",
         passive: true,
     },
 
@@ -42,7 +42,41 @@ let script = [
     {
         message: "Losing this list would risk the safety of our agents and our legitimacy as an organization. This is why we sent our best field agent to complete this mission. Do you choose to accept this mission? ",
         validResponses: ["accept", "yes", "affrmative", "sure", "ok", "yeah", "uh huh"],
+        
         invalidResponses: ["We would like to remind you that you are under contract...", "Remember that Turkish prison you escaped from? It would be a shame if they found where their most wanted escapee is now...", "Need we remind you of the great debt you owe to this organization"]
+    },
+
+    {
+        message: "Excelent! We knew we could count on you. One of your supporting agent will be in contact with you shortly with further instructions. Our fate is in your hands...",
+        passive: true,
+    },
+    {
+        message: "P.S. Don't get too attached to the laptop. It will self-destruct in",
+        passive: true,
+    },
+    {
+        message: "5....",
+        passive: true,
+    },
+    {
+        message: "4....",
+        passive: true,
+    },
+    {
+        message: "3....",
+        passive: true,
+    },
+    {
+        message: "2....",
+        passive: true,
+    },
+    {
+        message: "1....",
+        passive: true,
+    },
+    {
+        message: "....",
+        passive: true,
     },
 
 ]
@@ -64,7 +98,9 @@ function revealToConsole(message) {
         let displayMessage = (message) => {
             console.log(message);
             if (message.length <= 0) {
-                finished();
+                setTimeout(()=>{
+                    finished();
+                },500);
                 return;
             }
             let char = message[0];
@@ -86,6 +122,18 @@ function revealToConsole(message) {
 function chirp() {
     return new Promise(res => {
         var audio = new Audio('beep.mp3');
+        audio.loop = false;
+        let finished = () => {
+            audio.removeEventListener("ended", finished);
+            res();
+        }
+        audio.play();
+        audio.addEventListener("ended", finished);
+    })
+}
+function breaked() {
+    return new Promise(res => {
+        var audio = new Audio('broken.mp3');
         audio.loop = false;
         let finished = () => {
             audio.removeEventListener("ended", finished);
@@ -160,6 +208,8 @@ async function runGame() {
         document.getElementById("console").innerHTML = "";
         await revealToConsole("Goodbye!");
         document.getElementById("console").innerHTML = "";
+        document.getElementById("console").classList.add("dead");
+        await breaked();
         return;
     }
     if (!script[stage].isImage)
